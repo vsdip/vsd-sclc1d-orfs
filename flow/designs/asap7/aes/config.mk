@@ -1,0 +1,28 @@
+export PLATFORM               = asap7
+
+export DESIGN_NAME            = aes_cipher_top
+export DESIGN_NICKNAME        = aes
+
+export VERILOG_FILES = $(sort $(wildcard $(DESIGN_HOME)/src/$(DESIGN_NICKNAME)/*.v))
+export SDC_FILE      = $(DESIGN_HOME)/$(PLATFORM)/$(DESIGN_NICKNAME)/constraint.sdc
+
+export CORE_UTILIZATION         = 70
+export CORE_ASPECT_RATIO        = 1
+export CORE_MARGIN              = 2
+export PLACE_DENSITY            = 0.65
+export TNS_END_PERCENT          = 100
+
+ifeq ($(FLOW_VARIANT),top)
+	export DESIGN_NAME = aes_cipher_top
+	export SYNTH_BLACKBOXES = aes_key_expand_128
+else ifeq ($(FLOW_VARIANT),blackbox)
+	export DESIGN_NAME = aes_key_expand_128
+else ifeq ($(FLOW_VARIANT),combine)
+# List blackbox twice to demonstrates that duplicate modules are ignored.
+	export SYNTH_NETLIST_FILES = \
+	 $(WORK_HOME)/results/$(PLATFORM)/$(DESIGN_NICKNAME)/top/1_synth.v \
+	 $(WORK_HOME)/results/$(PLATFORM)/$(DESIGN_NICKNAME)/blackbox/1_synth.v \
+	 $(WORK_HOME)/results/$(PLATFORM)/$(DESIGN_NICKNAME)/blackbox/1_synth.v
+endif
+
+export SYNTH_USE_SYN = 1

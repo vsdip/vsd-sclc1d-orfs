@@ -1,0 +1,18 @@
+run_config:
+  design: gcd
+  experiment: freq
+  flow_home: /OpenROAD-flow-scripts/flow
+  jobs: 3
+  mode: sweep
+  platform: asap7
+  ray_outputs_dir: /work
+  orfs_outputs_dir: /work
+search_space:
+  _SDC_FILE_PATH:
+    type: constant
+    value: /OpenROAD-flow-scripts/flow/designs/asap7/gcd/constraint.sdc
+  _SDC_CLK_PERIOD:
+    type: range_int
+    min: 200
+    max: 500
+    step: 50

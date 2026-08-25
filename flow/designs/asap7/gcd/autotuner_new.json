@@ -1,0 +1,46 @@
+{
+    "_SDC_FILE_PATH": "constraint.sdc",
+    "_SDC_CLK_PERIOD": {
+        "type": "range_float",
+        "min": 200,
+        "max": 500,
+        "step": 0
+    },
+    "CELL_PAD_IN_SITES_GLOBAL_PLACEMENT": {
+        "type": "range_int",
+        "min": 0,
+        "max": 3,
+        "step": 1
+    },
+    "CELL_PAD_IN_SITES_DETAIL_PLACEMENT": {
+        "type": "range_int",
+        "min": 0,
+        "max": 3,
+        "step": 1
+    },
+    "_FR_LAYER_ADJUST": {
+        "type": "range_float",
+        "min": 0.1,
+        "max": 0.3,
+        "step": 0
+    },
+    "PLACE_DENSITY_LB_ADDON": {
+        "type": "range_float",
+        "min": 0.0,
+        "max": 0.2,
+        "step": 0
+    },
+    "CTS_CLUSTER_SIZE": {
+        "type": "range_int",
+        "min": 10,
+        "max": 200,
+        "step": 1
+    },
+    "CTS_CLUSTER_DIAMETER": {
+        "type": "range_int",
+        "min": 20,
+        "max": 400,
+        "step": 1
+    },
+    "_FR_FILE_PATH": "fastroute.tcl"
+}

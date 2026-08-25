@@ -1,0 +1,13 @@
+run_config:
+  design: gcd
+  experiment: basic
+  flow_home: /OpenROAD-flow-scripts/flow
+  jobs: 3
+  mode: tune
+  platform: asap7
+  ray_outputs_dir: /work
+  orfs_outputs_dir: /work
+  samples: 10
+  timeout: 1.0
+search_space:
+  file: designs/asap7/gcd/autotuner_new.json

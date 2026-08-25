@@ -1,0 +1,153 @@
+*~
+
+# Build working directories
+tools/install
+
+# Build files
+build_openroad.log
+etc/InstallerOpenROAD.sh
+
+# Test working directories
+flow/results
+flow/logs
+flow/reports
+flow/objects
+flow/tech
+
+# Tar archives
+flow/*tar.gz
+flow/run-me*.sh
+flow/vars*.sh
+flow/vars*.tcl
+flow/vars*.gdb
+
+# Common temp files
+flow/pt_shell_command.log
+flow/command.log
+flow/default.svf
+flow/rc_model.bin
+flow/*.tif.gz
+flow/*.def.v
+
+# RePlAce deps
+*PORT9.dat
+*POST9.dat
+*POWV9.dat
+# RePlAce debug dir
+plot
+
+# yosys temps
+flow/_tmp_yosys-abc-*
+flow/*_pdn.def
+flow/*.plt
+flow/run.param
+flow/dummy.guide
+flow/macrocell.list
+
+# utdBox router temps
+flow/layer_*.mps
+flow/*.did
+flow/*.log
+flow/*.met
+
+# FlexRoute
+flow/*.opennet
+
+# Platforms
+flow/platforms/*
+!flow/platforms/asap7
+!flow/platforms/ihp-sg13g2
+!flow/platforms/nangate45
+!flow/platforms/sky130hd
+!flow/platforms/sky130hs
+!flow/platforms/sky130io
+!flow/platforms/sky130ram
+!flow/platforms/gf180
+!flow/platforms/gt2n
+flow/private
+
+# network
+.nfs*
+
+# core dumps
+core
+core.*
+
+*~
+
+# Python bytecode
+__pycache__/
+
+dependencies/
+.vscode/
+.metals/
+perf.data
+perf.data.old
+
+# documentation specific
+docs/main
+docs/build
+SupportedOS.md
+index2.md
+Manpage.md
+mainREADME.md
+build
+.scala-build/
+.bsp/
+
+# autotuner artifacts
+metadata-base-at.json
+
+user.bazelrc
+bazel-bin
+bazel-out
+bazel-OpenROAD-flow-scripts
+bazel-testlogs
+MODULE.bazel.lock
+
+# python venv
+venv/
+tmp/
+
+
+# User-supplied PDK
+/pdks/
+/downloads/
+*.zip
+*.tar
+*.tar.gz
+
+# Installed and compiled tools
+/tools/install/
+/tools/build/
+/dependencies/
+
+# ORFS generated data
+/flow/logs/
+/flow/objects/
+/flow/results/
+/flow/reports/
+
+# C1D PDK files populated by install-pdk.sh
+/flow/platforms/sclc1d/lef/
+/flow/platforms/sclc1d/lib/
+/flow/platforms/sclc1d/gds/
+/flow/platforms/sclc1d/cdl/
+/flow/platforms/sclc1d/verilog/
+/flow/platforms/sclc1d/drc/
+/flow/platforms/sclc1d/lvs/
+/flow/platforms/sclc1d/rcx/
+/flow/platforms/sclc1d/scl_c1d.lyt
+/flow/platforms/sclc1d/scl_c1d.lyp
+/flow/platforms/sclc1d/scl_c1d.map
+/flow/platforms/sclc1d/.pdk-version
+
+# Crash and temporary files
+*.core
+core
+core.*
+qemu_*.core
+*.swp
+*~
+.DS_Store
+
