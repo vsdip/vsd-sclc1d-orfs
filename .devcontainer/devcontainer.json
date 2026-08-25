@@ -2,7 +2,7 @@
   "name": "VSD SCL C1D 1.2um ORFS",
   "build": {
     "dockerfile": "Dockerfile",
-    "context": "..",
+    "context": ".."
   },
   "remoteUser": "vscode",
   "overrideCommand": false,
@@ -17,8 +17,8 @@
   "containerEnv": {
     "DISPLAY": ":1",
     "TMPDIR": "/tmp/orfs",
-    "OPENROAD_EXE": "/opt/orfs-tools/OpenROAD/bin/openroad",
-    "YOSYS_EXE": "/opt/orfs-tools/yosys/bin/yosys",
+    "OPENROAD_EXE": "/usr/local/bin/openroad",
+    "YOSYS_EXE": "/opt/oss-cad-suite/bin/yosys",
     "KLAYOUT_CMD": "/usr/bin/klayout"
   },
   "hostRequirements": {
