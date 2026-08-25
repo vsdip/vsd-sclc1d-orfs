@@ -3,10 +3,6 @@
   "build": {
     "dockerfile": "Dockerfile",
     "context": "..",
-    "args": {
-      "TOOLCHAIN_URL": "https://github.com/vsdip/vsd-sclc1d-orfs/releases/download/toolchain-v0.1/vsd-sclc1d-toolchain-ubuntu22-amd64-v0.1.tar.gz",
-      "TOOLCHAIN_SHA256": "7f7fe6cb74c37d0b2e12b5d8773bea82b7ec6c1b14cc960ec7c92b738bbd8438"
-    }
   },
   "remoteUser": "vscode",
   "overrideCommand": false,
