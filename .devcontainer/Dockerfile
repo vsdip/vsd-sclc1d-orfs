@@ -41,6 +41,36 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends /tmp/klayout.deb; \
     rm -rf /var/lib/apt/lists/* /tmp/klayout.deb
 
+# Yosys x86-64 from the proven SCL180 Codespace setup
+RUN set -eux; \
+    curl -fL \
+      https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2025-10-31/oss-cad-suite-linux-x64-20251031.tgz \
+      -o /tmp/oss-cad.tgz; \
+    mkdir -p /opt; \
+    tar -xzf /tmp/oss-cad.tgz -C /opt; \
+    ln -s /opt/oss-cad-suite /opt/oss-cad; \
+    rm /tmp/oss-cad.tgz
+
+ENV PATH="/opt/oss-cad-suite/bin:/usr/local/bin:${PATH}"
+ENV YOSYS_EXE="/opt/oss-cad-suite/bin/yosys"
+ENV YOSYS_PLUGIN_PATH="/opt/oss-cad-suite/share/yosys/plugins"
+
+# Proven x86-64 OpenROAD package from vsd-scl180-orfs
+COPY .devcontainer/install-openroad.sh /tmp/install-openroad.sh
+
+RUN chmod +x /tmp/install-openroad.sh \
+ && /tmp/install-openroad.sh \
+ && rm /tmp/install-openroad.sh
+
+ENV OPENROAD_EXE="/usr/local/bin/openroad"
+
+RUN uname -m \
+ && file /usr/local/bin/openroad \
+ && file /opt/oss-cad-suite/bin/yosys \
+ && openroad -version \
+ && yosys -V \
+ && klayout -v
+
 RUN set -eux; \
     test -n "${TOOLCHAIN_URL}"; \
     test -n "${TOOLCHAIN_SHA256}"; \
@@ -52,9 +82,6 @@ RUN set -eux; \
     rm /tmp/toolchain.tar.gz; \
     ln -s /opt/orfs-tools/OpenROAD/bin/openroad /usr/local/bin/openroad; \
     ln -s /opt/orfs-tools/yosys/bin/yosys /usr/local/bin/yosys
-
-ENV PATH="/opt/orfs-tools/OpenROAD/bin:/opt/orfs-tools/yosys/bin:${PATH}"
-ENV LD_LIBRARY_PATH="/opt/orfs-tools/OpenROAD/lib:/opt/orfs-tools/yosys/lib"
 
 RUN openroad -version && yosys -V && klayout -v
 
