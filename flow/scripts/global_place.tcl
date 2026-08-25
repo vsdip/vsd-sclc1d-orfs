@@ -46,7 +46,6 @@ if { $min_phi > $max_phi } {
 MAX_PLACE_STEP_COEF ($max_phi)"
 }
 
-lappend global_placement_args -force_center_initial_place
 
 lappend global_placement_args -min_phi_coef $::env(MIN_PLACE_STEP_COEF)
 lappend global_placement_args -max_phi_coef $::env(MAX_PLACE_STEP_COEF)
