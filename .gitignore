@@ -159,3 +159,6 @@ qemu_*.core
 !flow/platforms/sclc1d/setRC.tcl
 !flow/platforms/sclc1d/dff_map.v
 !flow/platforms/sclc1d/latch_map.v
+!flow/platforms/common/
+!flow/platforms/common/lcu_kogge_stone.v
+
