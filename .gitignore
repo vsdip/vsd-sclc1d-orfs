@@ -151,3 +151,11 @@ qemu_*.core
 *~
 .DS_Store
 
+!flow/platforms/sclc1d/
+!flow/platforms/sclc1d/config.mk
+!flow/platforms/sclc1d/fastroute.tcl
+!flow/platforms/sclc1d/make_tracks.tcl
+!flow/platforms/sclc1d/pdn.tcl
+!flow/platforms/sclc1d/setRC.tcl
+!flow/platforms/sclc1d/dff_map.v
+!flow/platforms/sclc1d/latch_map.v
