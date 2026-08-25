@@ -1,0 +1,34 @@
+{
+  "name": "VSD SCL C1D 1.2um ORFS",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {
+      "TOOLCHAIN_URL": "https://github.com/vsdip/vsd-sclc1d-orfs/releases/download/toolchain-v0.1/vsd-sclc1d-toolchain-ubuntu22-amd64-v0.1.tar.gz",
+      "TOOLCHAIN_SHA256": "7f7fe6cb74c37d0b2e12b5d8773bea82b7ec6c1b14cc960ec7c92b738bbd8438"
+    }
+  },
+  "remoteUser": "vscode",
+  "overrideCommand": false,
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": {
+      "label": "SCL C1D noVNC Desktop",
+      "onAutoForward": "openBrowser",
+      "visibility": "private"
+    }
+  },
+  "containerEnv": {
+    "DISPLAY": ":1",
+    "TMPDIR": "/tmp/orfs",
+    "OPENROAD_EXE": "/opt/orfs-tools/OpenROAD/bin/openroad",
+    "YOSYS_EXE": "/opt/orfs-tools/yosys/bin/yosys",
+    "KLAYOUT_CMD": "/usr/bin/klayout"
+  },
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "postCreateCommand": "bash scripts/post-create.sh"
+}

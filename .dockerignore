@@ -1,0 +1,55 @@
+# Build working directories
+tools/OpenROAD/build/
+tools/kepler-formal/build/
+
+# Build files
+build_openroad.log
+
+# Test working directories
+flow/results
+flow/logs
+flow/reports
+flow/objects
+flow/tech
+
+bazel-bin/
+bazel-obj/
+bazel-OpenROAD-flow-scripts/
+bazel-testlogs/
+
+# Tar archives
+flow/*tar.gz
+flow/run-me*.sh
+flow/vars*.sh
+flow/vars*.tcl
+flow/vars*.gdb
+
+# Common temp files
+flow/*.log
+
+# Platforms
+
+# network
+.nfs*
+
+# core dumps
+core*
+
+# local dependencies
+dependencies/
+
+.git
+pdks
+downloads
+tools
+dependencies
+flow/logs
+flow/objects
+flow/results
+flow/reports
+*.core
+qemu_*.core
+*.zip
+*.tar
+*.tar.gz
+
