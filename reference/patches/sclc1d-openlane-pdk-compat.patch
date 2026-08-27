@@ -1,0 +1,215 @@
+]633;E;[ -f "$SC_BASE.orig" ];1be7f411-f897-46fd-a773-e04cd4a19329]633;C--- /workspaces/vsd-sclc1d-orfs/pdks/sclc1d/OS_C1D_SCL_PDK_31-07-2026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks/sclc1d/libs.tech/openlane/config.tcl.orig	2026-08-27 16:28:57.728921087 +0000
++++ /workspaces/vsd-sclc1d-orfs/pdks/sclc1d/OS_C1D_SCL_PDK_31-07-2026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks/sclc1d/libs.tech/openlane/config.tcl	2026-08-27 16:29:04.943921246 +0000
+@@ -2,7 +2,7 @@
+ set ::env(RT_MAX_LAYER) "metal2" ;# Change based on how many metal layers scl1200 has
+ set ::env(PROCESS) 1200 ;# Identifying it as 1.2um/1200nm
+ set ::env(PDK) "sclc1d"
+-set ::env(PDK_ROOT) "/home/scl/usr/digital_verification_01062026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks"
++set ::env(PDK_ROOT) "/workspaces/vsd-sclc1d-orfs/pdks/sclc1d/OS_C1D_SCL_PDK_31-07-2026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks"
+ # You must point these to the actual files in your scl1200/libs.ref directory
+ set ::env(TECH_LEF) "$::env(PDK_ROOT)/sclc1d/libs.ref/digital_c1d/lef/tech_c1d.lef"
+ set ::env(CELL_LEF) "$::env(PDK_ROOT)/sclc1d/libs.ref/digital_c1d/lef/core_c1d.lef"
+--- /workspaces/vsd-sclc1d-orfs/pdks/sclc1d/OS_C1D_SCL_PDK_31-07-2026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks/sclc1d/libs.tech/openlane/digital_c1d/config.tcl.orig	2026-08-27 16:28:58.346921101 +0000
++++ /workspaces/vsd-sclc1d-orfs/pdks/sclc1d/OS_C1D_SCL_PDK_31-07-2026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks/sclc1d/libs.tech/openlane/digital_c1d/config.tcl	2026-08-27 17:26:41.281997331 +0000
+@@ -2,7 +2,7 @@
+ set ::env(RT_MAX_LAYER) "metal2" ;# Change based on how many metal layers scl1200 has
+ set ::env(PROCESS) 1200 ;# Identifying it as 1.2um/1200nm
+ set ::env(PDK) "sclc1d"
+-set ::env(PDK_ROOT) "/home/scl/usr/digital_verification_01062026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks"
++set ::env(PDK_ROOT) "/workspaces/vsd-sclc1d-orfs/pdks/sclc1d/OS_C1D_SCL_PDK_31-07-2026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks"
+ # You must point these to the actual files in your scl1200/libs.ref directory
+ set ::env(TECH_LEF) "$::env(PDK_ROOT)/sclc1d/libs.ref/digital_c1d/lef/tech_c1d.lef"
+ set ::env(CELL_LEF) "$::env(PDK_ROOT)/sclc1d/libs.ref/digital_c1d/lef/core_c1d.lef"
+@@ -10,3 +10,192 @@
+ 
+ # If scl1200 has specific track information
+ set ::env(TRACKS_INFO_FILE) "$::env(PDK_ROOT)/sclc1d/libs.tech/openlane/tracks.info"
++
++# ============================================================
++# VSD SCL C1D OpenLane portability overrides
++# ============================================================
++
++set sclc1d_lib_root \
++    "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)"
++
++# Physical views
++set ::env(TECH_LEF) \
++    "$sclc1d_lib_root/lef/tech_c1d.lef"
++
++set ::env(CELLS_LEF) \
++    "$sclc1d_lib_root/lef/core_c1d.lef"
++
++# Core standard-cell timing library
++set sclc1d_core_lib \
++    "$sclc1d_lib_root/lib/nldm_tt_27_1p5.lib"
++
++set ::env(LIB_SYNTH)          $sclc1d_core_lib
++set ::env(LIB_SYNTH_COMPLETE) $sclc1d_core_lib
++set ::env(LIB_TYPICAL)        $sclc1d_core_lib
++set ::env(LIB_FASTEST)        $sclc1d_core_lib
++set ::env(LIB_SLOWEST)        $sclc1d_core_lib
++
++# Standard-cell placement site
++set ::env(PLACE_SITE) "CORE"
++
++
++# ============================================================
++# VSD / SCL C1D OpenLane 1.0.x compatibility configuration
++# ============================================================
++
++# DEF database units
++set ::env(DEF_UNITS_PER_MICRON) 1000
++
++# ------------------------------------------------------------
++# Power / ground
++# ------------------------------------------------------------
++set ::env(VDD_PIN) "VDD"
++set ::env(GND_PIN) "VSS"
++
++set ::env(STD_CELL_POWER_PINS)  "VDD"
++set ::env(STD_CELL_GROUND_PINS) "VSS"
++
++# ------------------------------------------------------------
++# Placement site
++# From SCL tech_c1d.lef:
++# SITE CORE SIZE 0.01 BY 48.700
++# ------------------------------------------------------------
++set ::env(PLACE_SITE)        "CORE"
++set ::env(PLACE_SITE_WIDTH)  0.01
++set ::env(PLACE_SITE_HEIGHT) 48.7
++
++# ------------------------------------------------------------
++# Cell exclusion lists
++# Empty for the initial reference flow.
++# ------------------------------------------------------------
++set ::env(NO_SYNTH_CELL_LIST) \
++    "$::env(PDK_ROOT)/$::env(PDK)/libs.tech/openlane/$::env(STD_CELL_LIBRARY)/no_synth.cells"
++
++set ::env(DRC_EXCLUDE_CELL_LIST) \
++    "$::env(PDK_ROOT)/$::env(PDK)/libs.tech/openlane/$::env(STD_CELL_LIBRARY)/drc_exclude.cells"
++
++# ------------------------------------------------------------
++# CTS
++# SCL reference flow uses INVR01.
++# ------------------------------------------------------------
++set ::env(CTS_ROOT_BUFFER) "INVR01"
++set ::env(CTS_CLK_BUFFER_LIST) "INVR01"
++
++# ------------------------------------------------------------
++# Two-layer routing stack
++# ------------------------------------------------------------
++set ::env(RT_MIN_LAYER) "metal1"
++set ::env(RT_MAX_LAYER) "metal2"
++
++set ::env(RT_CLOCK_MIN_LAYER) "metal1"
++set ::env(RT_CLOCK_MAX_LAYER) "metal2"
++
++# Existing SCL reference setting
++set ::env(GRT_LAYER_ADJUSTMENTS) "0.0,0.5"
++
++# ------------------------------------------------------------
++# I/O routing layers
++# Consistent with supplied SCL routing_c1d.tcl
++# ------------------------------------------------------------
++set ::env(FP_IO_HLAYER) "metal1"
++set ::env(FP_IO_VLAYER) "metal2"
++
++# ------------------------------------------------------------
++# PDN layer mapping
++# Consistent with supplied SCL two-metal reference PDN.
++# ------------------------------------------------------------
++set ::env(FP_PDN_RAIL_LAYER)       "metal1"
++set ::env(FP_PDN_HORIZONTAL_LAYER) "metal1"
++set ::env(FP_PDN_VERTICAL_LAYER)   "metal2"
++
++
++# ============================================================
++# SCL C1D synthesis / CTS configuration
++# ============================================================
++
++# Input driving cell
++set ::env(SYNTH_DRIVING_CELL) "INVR01"
++set ::env(SYNTH_DRIVING_CELL_PIN) "OUT1"
++
++# Clock input driver
++set ::env(SYNTH_CLK_DRIVING_CELL) "INVR01"
++set ::env(SYNTH_CLK_DRIVING_CELL_PIN) "OUT1"
++
++# Non-inverting buffer
++set ::env(SYNTH_MIN_BUF_PORT) "DELBUF IN1 OUT1"
++
++# Clock tree
++set ::env(CTS_ROOT_BUFFER) "INVR01"
++set ::env(CTS_CLK_BUFFER_LIST) "INVR01"
++
++
++# ============================================================
++# SCL C1D remaining synthesis constraints
++# ============================================================
++
++# Constant cells, detected directly from Liberty
++set ::env(SYNTH_TIEHI_PORT) "VDDCON TIEHI"
++set ::env(SYNTH_TIELO_PORT) "VSSCON TIELO"
++
++# INVR01 input capacitance = 0.0495 pF = 49.5 fF
++set ::env(OUTPUT_CAP_LOAD) 49.5
++
++# Conservative fanout derived from:
++# INVR01 max_capacitance / input_capacitance
++# 0.806 / 0.0495 ~= 16.28
++set ::env(MAX_FANOUT_CONSTRAINT) 16
++
++# INVR01 maximum transition from Liberty, ns
++set ::env(MAX_TRANSITION_CONSTRAINT) 2.5
++
++# INVR01 maximum output capacitance, pF
++set ::env(CTS_MAX_CAP) 0.806
++
++
++# ============================================================
++# SCL C1D ABC compatibility
++# ============================================================
++
++# SCL Liberty is readable by ABC for technology mapping,
++# but ABC 1.01 does not expose usable SCL delay data for
++# buffer/upsize/dnsize commands.
++set ::env(SYNTH_BUFFERING) 0
++set ::env(SYNTH_SIZING) 0
++
++
++# ============================================================
++# SCL C1D / ABC 1.01 compatibility mode
++# ============================================================
++
++set ::env(SYNTH_STRATEGY) "AREA 0"
++
++# ABC timing-driven buffering/sizing is incompatible with
++# this SCL Liberty in the ff5509f reference container.
++set ::env(SYNTH_BUFFERING) 0
++set ::env(SYNTH_SIZING) 0
++
++
++# SCL C1D physical tie-cell handling
++# VDDCON/VSSCON exist in Liberty but have no LEF physical masters.
++# Skip OpenLane's post-floorplan tie-cell insertion.
++set ::env(SCL_SKIP_TIE_INSERTION) 1
++
++
++# ============================================================
++# SCL C1D native OpenLane PDN integration
++# ============================================================
++
++# SCL uses its own followpin + ring PDN topology rather than
++# OpenLane's pitch/offset-based default stripe grid.
++set ::env(FP_PDN_CFG) \
++    "$::env(DESIGN_DIR)/src/pdn_scl_openlane.tcl"
++
++# Do not auto-rescale PDN pitch/offset values.
++# The SCL PDN configuration directly controls its geometry.
++set ::env(FP_PDN_AUTO_ADJUST) 0
++
++
++# SCL C1D placement architecture:
++# retain alternate physical placement rows.
++set ::env(SCL_DELETE_ALTERNATE_ROWS) 1
++

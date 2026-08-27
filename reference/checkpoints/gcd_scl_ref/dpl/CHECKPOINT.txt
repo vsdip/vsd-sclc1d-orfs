@@ -1,0 +1,41 @@
+SCL C1D OpenLane Reference Checkpoint
+
+Design: gcd
+Stage: detailed placement completed
+
+OpenLane:
+ff5509f65b17bfa4068d5336495ab1718987ff69
+
+OpenROAD:
+41a51eaf4ca2171c92ff38afb91eb37bbd3f36da
+
+PDK:
+SCL C1D 1.2um
+SITE CORE = 0.01um x 48.7um
+
+Physical design:
+Components = 315
+Initial rows = 70
+SCL alternate rows retained = 35
+Global placement target density = 0.20
+
+Detailed placement:
+total displacement = 10526.4 um
+average displacement = 33.4 um
+max displacement = 82.1 um
+original HPWL = 240011.4 um
+legalized HPWL = 244502.6 um
+HPWL delta = 2 percent
+
+Compatibility fixes applied:
+- OpenLane ff5509f synthesis compatibility for SCL Liberty/ABC
+- physical tie-cell insertion skipped for SCL where VDDCON/VSSCON lack LEF masters
+- custom SCL PDN configuration
+- PDN auto-adjust wrapper guarded
+- alternate SCL placement rows retained: 70 -> 35
+- optional detailed-placement padding variables guarded
+- OpenLane mergeLef.py made case-insensitive for lowercase SCL "macro" declarations
+
+Next stage:
+CTS
+Do not change the foundry SITE definition.

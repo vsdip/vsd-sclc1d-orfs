@@ -1,0 +1,183 @@
+diff --git a/scripts/mergeLef.py b/scripts/mergeLef.py
+index 4e619c5f..4c0b4f73 100755
+--- a/scripts/mergeLef.py
++++ b/scripts/mergeLef.py
+@@ -36,7 +36,7 @@ def get_delimited_blocks(data):
+     current_block_name = None
+     block_content = []
+     for line in data.splitlines():
+-        if line.startswith("MACRO") or line.startswith("SITE"):
++        if line.upper().startswith("MACRO") or line.upper().startswith("SITE"):
+             assert current_block_name is None, (current_block_name, line)
+             assert not block_content, block_content
+             tokens = line.split()
+@@ -45,8 +45,8 @@ def get_delimited_blocks(data):
+             block_content.append(line)
+         elif current_block_name is not None:
+             block_content.append(line)
+-            if line.startswith("END"):
+-                assert line != "END LIBRARY", current_block_name
++            if line.upper().startswith("END"):
++                assert line.upper() != "END LIBRARY", current_block_name
+                 tokens = line.split()
+                 assert len(tokens) == 2, line
+                 assert tokens[1] == current_block_name, (line, current_block_name)
+@@ -86,10 +86,10 @@ for lefFile in lefs:
+     site_cnt = 0
+     macro_cnt = 0
+     for block in blocks:
+-        if block.startswith("MACRO"):
++        if block.upper().startswith("MACRO"):
+             macro_cnt += 1
+         else:
+-            assert block.startswith("SITE"), block
++            assert block.upper().startswith("SITE"), block
+             site_cnt += 1
+ 
+     print(os.path.basename(lefFile) + ": SITEs matched found:", site_cnt)
+diff --git a/scripts/openroad/common/dpl_cell_pad.tcl b/scripts/openroad/common/dpl_cell_pad.tcl
+index 02b65ff6..cf0a69e7 100644
+--- a/scripts/openroad/common/dpl_cell_pad.tcl
++++ b/scripts/openroad/common/dpl_cell_pad.tcl
+@@ -17,8 +17,12 @@ set cell_pad_side [expr $cell_pad_value / 2]
+ 
+ set_placement_padding -global -right $cell_pad_side -left $cell_pad_side
+ 
+-if { $::env(CELL_PAD_EXCLUDE) != "" } {
+-    set_placement_padding -masters $::env(CELL_PAD_EXCLUDE) -right 0 -left 0
++if { [info exists ::env(CELL_PAD_EXCLUDE)] &&
++     $::env(CELL_PAD_EXCLUDE) != "" } {
++    set_placement_padding         -masters $::env(CELL_PAD_EXCLUDE)         -right 0 -left 0
+ }
+ 
+-set_placement_padding -masters $::env(DIODE_CELL) -left $::env(DIODE_PADDING)
++if { [info exists ::env(DIODE_CELL)] &&
++     $::env(DIODE_CELL) != "" } {
++    set_placement_padding         -masters $::env(DIODE_CELL)         -left $::env(DIODE_PADDING)
++}
+diff --git a/scripts/openroad/floorplan.tcl b/scripts/openroad/floorplan.tcl
+index a4cb0746..696c0eb9 100755
+--- a/scripts/openroad/floorplan.tcl
++++ b/scripts/openroad/floorplan.tcl
+@@ -60,13 +60,17 @@ if {$::env(FP_SIZING) == "absolute"} {
+ 
+ initialize_floorplan {*}$arg_list
+ 
+-set tielo_cell [lindex $::env(SYNTH_TIELO_PORT) 0]
+-set tielo_port [lindex $::env(SYNTH_TIELO_PORT) 1]
+-set tiehi_cell [lindex $::env(SYNTH_TIEHI_PORT) 0]
+-set tiehi_port [lindex $::env(SYNTH_TIEHI_PORT) 1]
++if { [info exists ::env(SCL_SKIP_TIE_INSERTION)] && $::env(SCL_SKIP_TIE_INSERTION) } {
++    puts "\[INFO\] SCL C1D: skipping physical tie-cell insertion"
++} else {
++    set tielo_cell [lindex $::env(SYNTH_TIELO_PORT) 0]
++    set tielo_port [lindex $::env(SYNTH_TIELO_PORT) 1]
++    set tiehi_cell [lindex $::env(SYNTH_TIEHI_PORT) 0]
++    set tiehi_port [lindex $::env(SYNTH_TIEHI_PORT) 1]
+ 
+-insert_tiecells "$tielo_cell/$tielo_port" -prefix "TIE_ZERO_"
+-insert_tiecells "$tiehi_cell/$tiehi_port" -prefix "TIE_ONE_"
++    insert_tiecells "$tielo_cell/$tielo_port" -prefix "TIE_ZERO_"
++    insert_tiecells "$tiehi_cell/$tiehi_port" -prefix "TIE_ONE_"
++}
+ 
+ set ::chip [[::ord::get_db] getChip]
+ set ::tech [[::ord::get_db] getTech]
+diff --git a/scripts/tcl_commands/floorplan.tcl b/scripts/tcl_commands/floorplan.tcl
+index 2837070c..c58995a4 100755
+--- a/scripts/tcl_commands/floorplan.tcl
++++ b/scripts/tcl_commands/floorplan.tcl
+@@ -67,10 +67,10 @@ proc init_floorplan {args} {
+     puts_verbose "Core area width: $core_width"
+     puts_verbose "Core area height: $core_height"
+ 
+-    set min_width [expr {$::env(FP_PDN_VOFFSET) + $::env(FP_PDN_VPITCH)}]
+-    set min_height [expr {$::env(FP_PDN_HOFFSET) + $::env(FP_PDN_HPITCH)}]
+-
+     if { $::env(FP_PDN_AUTO_ADJUST) } {
++        set min_width [expr {$::env(FP_PDN_VOFFSET) + $::env(FP_PDN_VPITCH)}]
++        set min_height [expr {$::env(FP_PDN_HOFFSET) + $::env(FP_PDN_HPITCH)}]
++
+         if { $core_width <= $min_width || $core_height <= $min_height } {
+ 
+             set intermediate [index_file $::env(floorplan_tmpfiles)/minimized_pdn.txt]
+@@ -90,13 +90,14 @@ proc init_floorplan {args} {
+ 
+             puts_warn "Current core area is too small for the power grid settings chosen. The power grid will be scaled down."
+         }
+-    }
+ 
+-    puts_verbose "Final Vertical PDN Offset: $::env(FP_PDN_VOFFSET)"
+-    puts_verbose "Final Horizontal PDN Offset: $::env(FP_PDN_HOFFSET)"
+-
+-    puts_verbose "Final Vertical PDN Pitch: $::env(FP_PDN_VPITCH)"
+-    puts_verbose "Final Horizontal PDN Pitch: $::env(FP_PDN_HPITCH)"
++        puts_verbose "Final Vertical PDN Offset: $::env(FP_PDN_VOFFSET)"
++        puts_verbose "Final Horizontal PDN Offset: $::env(FP_PDN_HOFFSET)"
++        puts_verbose "Final Vertical PDN Pitch: $::env(FP_PDN_VPITCH)"
++        puts_verbose "Final Horizontal PDN Pitch: $::env(FP_PDN_HPITCH)"
++    } else {
++        puts_verbose "PDN auto-adjust disabled; FP_PDN_CFG controls PDN geometry."
++    }
+ 
+     TIMER::timer_stop
+     exec echo "[TIMER::get_runtime]" | python3 $::env(SCRIPTS_DIR)/write_runtime.py "floorplan initialization - openroad"
+@@ -456,6 +457,21 @@ proc run_floorplan {args} {
+     # intial fp
+     init_floorplan
+ 
++    # SCL C1D requires alternate placement rows.
++    # Apply before IO placement and PDN generation.
++    if { [info exists ::env(SCL_DELETE_ALTERNATE_ROWS)] &&
++         $::env(SCL_DELETE_ALTERNATE_ROWS) } {
++
++        increment_index
++
++        puts_info "Applying SCL C1D alternate-row placement rule..."
++
++        run_openroad_script             $::env(DESIGN_DIR)/src/scl_delete_alternate_rows.tcl             -indexed_log [index_file $::env(floorplan_logs)/scl_rows.log]             -save "to=$::env(floorplan_tmpfiles),name=scl_rows,def,odb"
++
++        set row_count [exec sh -c "grep -c '^ROW ' $::env(CURRENT_DEF)"]
++        puts_info "SCL C1D placement rows after filtering: $row_count"
++    }
++
+     # check for deprecated io variables
+     if { [info exists ::env(FP_IO_HMETAL)]} {
+         set ::env(FP_IO_HLAYER) [lindex $::env(TECH_METAL_LAYERS) [expr {$::env(FP_IO_HMETAL) - 1}]]
+diff --git a/scripts/yosys/synth.tcl b/scripts/yosys/synth.tcl
+index 5a47938b..bb471032 100755
+--- a/scripts/yosys/synth.tcl
++++ b/scripts/yosys/synth.tcl
+@@ -143,23 +143,23 @@ if {$buffering==1} {
+ 
+ 
+ set delay_scripts [list \
+-    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_dly}; scleanup;${abc_map_old_dly};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};stime,-p;print_stats -m" \
++    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_dly}; scleanup;${abc_map_old_dly};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};print_stats -m" \
+     \
+-    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_dly}; scleanup;${abc_choice2};${abc_map_old_dly};${abc_area_recovery_2}; retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};stime,-p;print_stats -m" \
++    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_dly}; scleanup;${abc_choice2};${abc_map_old_dly};${abc_area_recovery_2}; retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};print_stats -m" \
+     \
+-    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_dly}; scleanup;${abc_choice};${abc_map_old_dly};${abc_area_recovery_1}; retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};stime,-p;print_stats -m" \
++    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_dly}; scleanup;${abc_choice};${abc_map_old_dly};${abc_area_recovery_1}; retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};print_stats -m" \
+     \
+-    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_area};scleanup;${abc_choice2};${abc_map_new_area};${abc_choice2};${abc_map_old_dly};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};stime,-p;print_stats -m" \
+-    "+read_constr,${sdc_file};&get -n;&st;&dch;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;buffer -c -N ${max_FO};topo;stime -c;upsize -c;dnsize -c;;stime,-p;print_stats -m" \
++    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_area};scleanup;${abc_choice2};${abc_map_new_area};${abc_choice2};${abc_map_old_dly};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};print_stats -m" \
++    "+read_constr,${sdc_file};&get -n;&st;&dch;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;&get -n;&st;&syn2;&if -g -K 6;&synch2;&nf;&put;buffer -c -N ${max_FO};topo;stime -c;upsize -c;dnsize -c;;print_stats -m" \
+ ]
+ 
+ set area_scripts [list \
+-    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_area};scleanup;${abc_choice2};${abc_map_new_area};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};stime,-p;print_stats -m" \
++    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_area};scleanup;${abc_choice2};${abc_map_new_area};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};print_stats -m" \
+     \
+-    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_area};scleanup;${abc_choice2};${abc_map_new_area};${abc_choice2};${abc_map_new_area};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};stime,-p;print_stats -m" \
++    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_resyn2};${abc_retime_area};scleanup;${abc_choice2};${abc_map_new_area};${abc_choice2};${abc_map_new_area};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};print_stats -m" \
+     \
+-    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_choice2};${abc_retime_area};scleanup;${abc_choice2};${abc_map_new_area};${abc_choice2};${abc_map_new_area};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};stime,-p;print_stats -m" \
+-    "+read_constr,${sdc_file};strash;dch;map -B 0.9;topo;stime -c;buffer -c -N ${max_FO};upsize -c;dnsize -c;stime,-p;print_stats -m" \
++    "+read_constr,${sdc_file};fx;mfs;strash;refactor;${abc_choice2};${abc_retime_area};scleanup;${abc_choice2};${abc_map_new_area};${abc_choice2};${abc_map_new_area};retime,-D,{D};&get,-n;&st;&dch;&nf;&put;${abc_fine_tune};print_stats -m" \
++    "+read_constr,${sdc_file};strash;dch;map -B 0.9;topo;stime -c;buffer -c -N ${max_FO};upsize -c;dnsize -c;print_stats -m" \
+ ]
+ 
+ set all_scripts [list {*}$delay_scripts {*}$area_scripts]
