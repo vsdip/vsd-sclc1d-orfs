@@ -20,3 +20,8 @@ echo "     make doctor"
 echo "  4. Run:"
 echo "     make gcd"
 
+
+echo
+echo "Installing SCL reference environment..."
+bash "$REPO_ROOT/scripts/install-scl-reference-tools.sh"
+

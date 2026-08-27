@@ -1,0 +1,26 @@
+read_liberty -lib /workspaces/vsd-sclc1d-orfs/pdks/sclc1d/OS_C1D_SCL_PDK_31-07-2026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks/sclc1d/digital_c1d/lib/nldm_tt_27_1p5.lib
+
+read_verilog /workspaces/OpenLane-scl-ref/designs/gcd_scl_ref/src/gcd.v
+
+hierarchy -check -top gcd
+
+proc
+opt
+fsm
+opt
+memory
+opt
+
+techmap
+opt
+
+dfflibmap -liberty /workspaces/vsd-sclc1d-orfs/pdks/sclc1d/OS_C1D_SCL_PDK_31-07-2026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks/sclc1d/digital_c1d/lib/nldm_tt_27_1p5.lib
+
+abc -liberty /workspaces/vsd-sclc1d-orfs/pdks/sclc1d/OS_C1D_SCL_PDK_31-07-2026/my_dtech/Open_Source_SCL_1.2micron_PDK_digital/open_source_scl_c1d/open_pdks/sclc1d/digital_c1d/lib/nldm_tt_27_1p5.lib
+
+opt
+clean
+
+stat
+
+write_verilog /workspaces/OpenLane-scl-ref/designs/gcd_scl_ref/src/gcd_syn.v
