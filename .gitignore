@@ -162,3 +162,7 @@ qemu_*.core
 !flow/platforms/common/
 !flow/platforms/common/lcu_kogge_stone.v
 
+
+# SCL PDK - never commit
+pdks/
+*.zip
