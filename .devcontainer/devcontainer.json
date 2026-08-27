@@ -6,7 +6,9 @@
   },
   "remoteUser": "vscode",
   "overrideCommand": false,
-  "forwardPorts": [6080],
+  "forwardPorts": [
+    6080
+  ],
   "portsAttributes": {
     "6080": {
       "label": "SCL C1D noVNC Desktop",
@@ -26,5 +28,11 @@
     "memory": "8gb",
     "storage": "32gb"
   },
-  "postCreateCommand": "bash scripts/post-create.sh"
+  "postCreateCommand": "bash scripts/post-create.sh",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true
+    }
+  }
 }
