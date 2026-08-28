@@ -27,7 +27,8 @@ RUN apt-get update \
     libreadline8 libtcl8.6 libtk8.6 zlib1g \
     libstdc++6 libgcc-s1 libyaml-cpp0.7 \
     libqt5charts5 \
-    xvfb xfce4 xfce4-terminal thunar dbus-x11 \
+    xvfb xfce4 xfce4-session xfce4-panel xfdesktop4 xfwm4 \
+    xfce4-terminal thunar dbus-x11 \
     x11vnc novnc websockify supervisor \
     magic ngspice gtkwave verilator iverilog \
     locales vim \
