@@ -38,7 +38,7 @@ RUN apt-get update \
 # KLayout 0.30.7 amd64
 RUN set -eux; \
     curl -fL \
-      https://www.klayout.org/downloads/Ubuntu-22/klayout_0.30.7-1_amd64.deb \
+      https://www.klayout.org/downloads/Ubuntu-22/klayout_0.30.9-1_amd64.deb \
       -o /tmp/klayout.deb; \
     apt-get update; \
     apt-get install -y --no-install-recommends /tmp/klayout.deb; \
