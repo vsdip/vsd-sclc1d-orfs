@@ -1,5 +1,4 @@
 
-````markdown
 # VSD SCL C1D 1.2 µm RTL-to-GDS Reference Flow
 
 A reproducible **RTL-to-GDS digital design flow** for the **SCL C1D 1.2 µm CMOS PDK**, running entirely in **GitHub Codespaces** using open-source tools.
