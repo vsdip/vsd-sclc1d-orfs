@@ -49,6 +49,21 @@ for filename in sys.argv[1:]:
 PY
 
 #
+# Generate VSD/OpenROAD routing compatibility LEF.
+#
+# IMPORTANT:
+# The foundry LEF under libs.ref is never modified.
+#
+RAW_CORE_LEF="$PDK_ROOT/sclc1d/libs.ref/digital_c1d/lef/core_c1d.lef"
+
+COMPAT_CORE_LEF="$PDK_ROOT/sclc1d/libs.tech/openlane/digital_c1d/core_c1d_vsd.lef"
+
+python3 \
+    "$REPO_ROOT/scripts/fix-sclc1d-routing-lef.py" \
+    "$RAW_CORE_LEF" \
+    "$COMPAT_CORE_LEF"
+
+#
 # Install the VSD compatibility overlay inside the PDK itself.
 # This means it is visible inside the nested OpenLane container.
 #
