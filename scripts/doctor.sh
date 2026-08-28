@@ -41,4 +41,66 @@ echo "Yosys:    $(yosys -V 2>&1 | head -n 1)"
 echo "KLayout:  $(klayout -v 2>&1 | head -n 1)"
 echo "Python:   $(python3 --version 2>&1)"
 echo
+
+#
+# Reference OpenLane checks
+#
+
+REF_OPENLANE="/workspaces/OpenLane-scl-ref"
+REF_COMMIT="ff5509f65b17bfa4068d5336495ab1718987ff69"
+REF_IMAGE="ghcr.io/the-openroad-project/openlane:${REF_COMMIT}-amd64"
+
+if [[ ! -d "$REF_OPENLANE/.git" ]]; then
+    echo "[ERROR] Reference OpenLane installation missing."
+    exit 1
+fi
+
+ACTUAL_REF_COMMIT="$(git -C "$REF_OPENLANE" rev-parse HEAD)"
+
+if [[ "$ACTUAL_REF_COMMIT" != "$REF_COMMIT" ]]; then
+    echo "[ERROR] Wrong reference OpenLane commit."
+    echo "Expected: $REF_COMMIT"
+    echo "Actual:   $ACTUAL_REF_COMMIT"
+    exit 1
+fi
+
+if [[ ! -f "$REF_OPENLANE/designs/gcd_scl_ref/config.tcl" ]]; then
+    echo "[ERROR] gcd_scl_ref design is missing."
+    exit 1
+fi
+
+RAW_PDK="$REPO_ROOT/pdks/sclc1d/current"
+
+if [[ ! -d "$RAW_PDK/sclc1d" ]]; then
+    echo "[ERROR] Reference raw PDK link is missing."
+    exit 1
+fi
+
+CORE_LEF="$RAW_PDK/sclc1d/libs.ref/digital_c1d/lef/core_c1d.lef"
+
+MACRO_COUNT="$(
+    grep -ciE '^[[:space:]]*macro[[:space:]]+' "$CORE_LEF"
+)"
+
+if [[ "$MACRO_COUNT" -ne 68 ]]; then
+    echo "[ERROR] Unexpected SCL standard-cell LEF macro count: $MACRO_COUNT"
+    exit 1
+fi
+
+if [[ ! -f \
+"$RAW_PDK/sclc1d/libs.tech/openlane/digital_c1d/vsd_sclc1d_compat.tcl" ]]; then
+    echo "[ERROR] Reference PDK compatibility overlay missing."
+    exit 1
+fi
+
+if ! docker image inspect "$REF_IMAGE" >/dev/null 2>&1; then
+    echo "[ERROR] Reference OpenLane Docker image is missing."
+    exit 1
+fi
+
+echo
+echo "Reference OpenLane: $ACTUAL_REF_COMMIT"
+echo "Reference PDK LEF macros: $MACRO_COUNT"
+echo "Reference design: gcd_scl_ref"
+
 echo "[OK] Environment and PDK checks passed."

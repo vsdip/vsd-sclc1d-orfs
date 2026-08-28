@@ -8,20 +8,27 @@ mkdir -p /tmp/orfs
 
 git config --global --add safe.directory "$REPO_ROOT" || true
 
-echo
-echo "SCL C1D Codespace is ready."
-echo
-echo "Next steps:"
-echo "  1. Upload the tested SCL 1.2um PDK ZIP."
-echo "  2. Run:"
-echo "     make install-pdk PDK_ZIP=/path/to/SCL_1.2um_PDK.zip"
-echo "  3. Run:"
-echo "     make doctor"
-echo "  4. Run:"
-echo "     make gcd"
-
+#
+# Everything that does NOT require the confidential SCL PDK
+# is prepared automatically during Codespace creation.
+#
+bash "$REPO_ROOT/scripts/setup-reference-openlane.sh"
 
 echo
-echo "Installing SCL reference environment..."
-bash "$REPO_ROOT/scripts/install-scl-reference-tools.sh"
-
+echo "================================================"
+echo " VSD SCL C1D Codespace ready"
+echo "================================================"
+echo
+echo "User steps:"
+echo
+echo "1. Upload the SCL 1.2um PDK ZIP"
+echo
+echo "2. Install:"
+echo '   make install-pdk PDK_ZIP="SCL 1.2 µm PDK.zip"'
+echo
+echo "3. Verify:"
+echo "   make doctor"
+echo
+echo "4. Start reference OpenLane from:"
+echo "   cd /workspaces/OpenLane-scl-ref"
+echo

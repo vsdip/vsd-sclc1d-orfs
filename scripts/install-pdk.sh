@@ -125,7 +125,24 @@ fi
     echo "PDK_SOURCE=$PDK_SOURCE"
 } > "$PLATFORM_DIR/.pdk-version"
 
+#
+# Stable raw PDK root used by the reference OpenLane flow.
+#
+RAW_PDK_ROOT="$(dirname "$PDK_SOURCE")"
+
+ln -sfn \
+    "$RAW_PDK_ROOT" \
+    "$REPO_ROOT/pdks/sclc1d/current"
+
+#
+# Configure the supplied raw PDK for the pinned OpenLane 1.0.x flow.
+#
+"$REPO_ROOT/scripts/configure-reference-pdk.sh" \
+    "$RAW_PDK_ROOT"
+
 echo
 echo "[OK] SCL C1D PDK installed."
 echo "Release: $PDK_RELEASE"
 echo "Platform: $PLATFORM_DIR"
+echo "Reference PDK: $REPO_ROOT/pdks/sclc1d/current"
+
