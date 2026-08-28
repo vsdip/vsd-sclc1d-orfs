@@ -1,4 +1,3 @@
-Copy the entire block below directly into `README.md` in the GitHub GUI.
 
 ````markdown
 # VSD SCL C1D 1.2 µm RTL-to-GDS Reference Flow
