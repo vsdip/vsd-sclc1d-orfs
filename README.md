@@ -1,39 +1,41 @@
-# SCL 1.2 µm Open-Source Digital Design Flow
+# VSD SCL C1D 1.2 µm RTL-to-GDS Reference Flow
 
-This repository provides a reproducible digital RTL-to-GDSII design environment for the
-**SCL C1D 1.2 µm CMOS PDK** using open-source semiconductor design tools.
+This repository provides a reproducible GitHub Codespaces RTL-to-GDS flow for the **SCL C1D 1.2 µm digital PDK**.
 
-The environment is designed to run directly in **GitHub Codespaces**.
+Validated flow:
+
+**RTL → Synthesis → Floorplan → Placement → CTS → Routing → OpenRCX → STA → KLayout GDS**
+
+The SCL PDK is not stored in this repository.
 
 ---
 
-## 1. Create a GitHub Codespace
+## 1. Create a Codespace
 
-Open this repository:
+Open:
 
 https://github.com/vsdip/vsd-sclc1d-orfs
 
 Select:
 
-**Code → Codespaces → Create codespace**
+**Code → Codespaces → Create codespace on main**
 
-Wait until the Codespace setup completes.
+Wait for Codespace initialization to complete.
 
 ---
 
-## 2. Download the SCL 1.2 µm PDK
+## 2. Download / upload the SCL PDK
 
-The SCL PDK is not stored in this repository.
+Place the approved SCL C1D 1.2 µm PDK ZIP inside the Codespace.
 
-Obtain the approved SCL 1.2 µm digital PDK package separately and upload the ZIP file
-into the repository root inside the Codespace.
+For example:
 
-Example:
+```bash
+cd /workspaces/vsd-sclc1d-orfs
+ls -lh *.zip
+cd /workspaces/vsd-sclc1d-orfs
 
-```text
-vsd-sclc1d-orfs/
-├── SCL 1.2 µm PDK.zip
-├── Makefile
-├── flow/
-├── scripts/
-└── ...
+make install-pdk \
+PDK_ZIP="/workspaces/vsd-sclc1d-orfs/SCL_PDK.zip"
+
+

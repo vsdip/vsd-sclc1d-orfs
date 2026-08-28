@@ -156,3 +156,59 @@ set ::env(SCL_DRT_SINGLE_PROCESS) 1
 # The post-global-route estimated STA path re-enters the same
 # incompatible GlobalRouter initialization in this pinned build.
 set ::env(SCL_SKIP_GRT_STA) 1
+
+# ============================================================
+# OpenRCX / post-route STA
+# ============================================================
+
+set ::env(SPEF_EXTRACTOR) "openrcx"
+
+set ::env(RCX_RULES) \
+    "$::env(PDK_ROOT)/sclc1d/libs.tech/openrcx/scl_c1d.rcx.lib"
+
+set ::env(RUN_SPEF_EXTRACTION) 1
+
+# OpenLane format:
+# layer_name capacitance resistance
+set ::env(LAYERS_RC) \
+    "metal1 2.648e-4 2.083333e-2,metal2 2.390e-4 1.200000e-2"
+
+set ::env(VIAS_RC) \
+    "via1 1.700000e-1"
+
+set ::env(DATA_WIRE_RC_LAYER) "metal1"
+set ::env(CLOCK_WIRE_RC_LAYER) "metal2"
+
+
+# ============================================================
+# KLayout stream-out
+# ============================================================
+
+set ::env(GDS_FILES) \
+    "$::env(PDK_ROOT)/sclc1d/libs.ref/digital_c1d/gds/core_c1d.gds"
+
+set ::env(KLAYOUT_TECH) \
+    "$::env(PDK_ROOT)/sclc1d/libs.tech/klayout/tech/scl_c1d.lyt"
+
+set ::env(KLAYOUT_PROPERTIES) \
+    "$::env(PDK_ROOT)/sclc1d/libs.tech/klayout/tech/scl_c1d.lyp"
+
+set ::env(KLAYOUT_DEF_LAYER_MAP) \
+    "$::env(PDK_ROOT)/sclc1d/libs.tech/klayout/tech/scl_c1d.map"
+
+set ::env(PRIMARY_SIGNOFF_TOOL) "klayout"
+
+set ::env(RUN_KLAYOUT) 1
+
+# Supplied SCL PDK currently has no OpenLane Magic/Netgen integration.
+set ::env(RUN_MAGIC) 0
+set ::env(RUN_KLAYOUT_XOR) 0
+set ::env(RUN_MAGIC_DRC) 0
+set ::env(RUN_KLAYOUT_DRC) 0
+set ::env(RUN_LVS) 0
+set ::env(RUN_CVC) 0
+
+# IR-drop engine works, but validated VSRC locations are still required
+# before the numbers can be treated as signoff-quality.
+set ::env(RUN_IRDROP_REPORT) 0
+
