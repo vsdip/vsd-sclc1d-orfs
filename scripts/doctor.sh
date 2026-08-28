@@ -69,6 +69,22 @@ if [[ ! -f "$REF_OPENLANE/designs/gcd_scl_ref/config.tcl" ]]; then
     exit 1
 fi
 
+
+if ! grep -q 'SCL_DRT_SINGLE_PROCESS' \
+    "$REF_OPENLANE/scripts/openroad/droute.tcl"; then
+
+    echo "[ERROR] SCL detailed-routing compatibility patch missing."
+    exit 1
+fi
+
+if ! grep -q 'SCL_SKIP_GRT_STA' \
+    "$REF_OPENLANE/scripts/tcl_commands/routing.tcl"; then
+
+    echo "[ERROR] SCL post-GRT STA compatibility patch missing."
+    exit 1
+fi
+
+
 RAW_PDK="$REPO_ROOT/pdks/sclc1d/current"
 
 if [[ ! -d "$RAW_PDK/sclc1d" ]]; then
@@ -77,6 +93,27 @@ if [[ ! -d "$RAW_PDK/sclc1d" ]]; then
 fi
 
 CORE_LEF="$RAW_PDK/sclc1d/libs.ref/digital_c1d/lef/core_c1d.lef"
+
+COMPAT_CORE_LEF="$RAW_PDK/sclc1d/libs.tech/openlane/digital_c1d/core_c1d_vsd.lef"
+
+if [[ ! -f "$COMPAT_CORE_LEF" ]]; then
+    echo "[ERROR] SCL OpenLane compatibility LEF is missing."
+    echo "Run: make install-pdk PDK_ZIP=/path/to/SCL_PDK.zip"
+    exit 1
+fi
+
+if grep -q 'RECT 12.050 28.754 14.950 48.700' "$COMPAT_CORE_LEF"; then
+    echo "[ERROR] Compatibility LEF still contains off-grid OR2101/VDD geometry."
+    exit 1
+fi
+
+if ! grep -q 'RECT 12.050 28.755 14.950 48.700' "$COMPAT_CORE_LEF"; then
+    echo "[ERROR] Expected corrected OR2101/VDD geometry not found."
+    exit 1
+fi
+
+echo "[OK] SCL OpenLane compatibility LEF present."
+
 
 MACRO_COUNT="$(
     grep -ciE '^[[:space:]]*macro[[:space:]]+' "$CORE_LEF"

@@ -51,3 +51,19 @@ set ::env(PL_ROUTABILITY_DRIVEN) 0
 
 set ::env(PL_RESIZER_DESIGN_OPTIMIZATIONS) 0
 set ::env(PL_OPTIMIZE_MIRRORING) 0
+
+
+# ============================================================
+# Validated SCL routing compatibility
+# ============================================================
+
+set ::env(PL_RESIZER_TIMING_OPTIMIZATIONS) 0
+set ::env(PL_OPTIMIZE_MIRRORING) 0
+
+set ::env(GLB_RESIZER_DESIGN_OPTIMIZATIONS) 0
+set ::env(GLB_RESIZER_TIMING_OPTIMIZATIONS) 0
+
+set ::env(GRT_REPAIR_ANTENNAS) 0
+
+# Disabled during first SCL routed-reference validation.
+set ::env(RUN_FILL_INSERTION) 0

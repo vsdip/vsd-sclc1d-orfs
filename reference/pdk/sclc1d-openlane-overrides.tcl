@@ -13,7 +13,7 @@ set ::env(TECH_LEF) \
     "$sclc1d_lib_root/lef/tech_c1d.lef"
 
 set ::env(CELLS_LEF) \
-    "$sclc1d_lib_root/lef/core_c1d.lef"
+    "$::env(PDK_ROOT)/sclc1d/libs.tech/openlane/digital_c1d/core_c1d_vsd.lef"
 
 
 # ------------------------------------------------------------
@@ -143,3 +143,16 @@ set ::env(FP_PDN_AUTO_ADJUST) 0
 # ------------------------------------------------------------
 
 set ::env(SCL_DELETE_ALTERNATE_ROWS) 1
+
+
+# ------------------------------------------------------------
+# OpenROAD 41a51eaf / SCL two-metal routing compatibility
+# ------------------------------------------------------------
+
+# OpenROAD's read_guides path assumes a third routing layer.
+# SCL C1D has only metal1 + metal2.
+set ::env(SCL_DRT_SINGLE_PROCESS) 1
+
+# The post-global-route estimated STA path re-enters the same
+# incompatible GlobalRouter initialization in this pinned build.
+set ::env(SCL_SKIP_GRT_STA) 1
