@@ -38,3 +38,16 @@ set ::env(RT_CLOCK_MAX_LAYER) "metal2"
 set ::env(RUN_CTS) 1
 set ::env(FP_PDN_ENABLE) 1
 
+
+# ============================================================
+# Validated SCL reference placement settings
+# ============================================================
+
+set ::env(GPL_CELL_PADDING) 0
+set ::env(DPL_CELL_PADDING) 0
+
+set ::env(PL_TIME_DRIVEN) 0
+set ::env(PL_ROUTABILITY_DRIVEN) 0
+
+set ::env(PL_RESIZER_DESIGN_OPTIMIZATIONS) 0
+set ::env(PL_OPTIMIZE_MIRRORING) 0
