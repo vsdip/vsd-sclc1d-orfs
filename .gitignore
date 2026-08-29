@@ -166,3 +166,7 @@ qemu_*.core
 # SCL PDK - never commit
 pdks/
 *.zip
+
+# Additional SCL PDK assets populated by install-pdk.sh
+/flow/platforms/sclc1d/klayout/
+/flow/platforms/sclc1d/scripts_template/
