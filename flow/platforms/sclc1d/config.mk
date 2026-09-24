@@ -5,7 +5,7 @@ export PROCESS = 1200
 # Technology and cell views
 export TECH_LEF = $(PLATFORM_DIR)/lef/tech_c1d.lef
 export SC_LEF = $(PLATFORM_DIR)/lef/core_c1d.lef
-export LIB_FILES = $(PLATFORM_DIR)/lib/nldm_tt_27_1p5.lib $(ADDITIONAL_LIBS)
+export LIB_FILES = $(PLATFORM_DIR)/lib/c1d_core_typ.lib $(ADDITIONAL_LIBS)
 # dfflibmap does not recognize the FF description in the supplied Liberty.
 # Map the positive-edge internal Yosys flop explicitly to DFFL11 instead.
 export DFF_MAP_FILE = $(PLATFORM_DIR)/dff_map.v
