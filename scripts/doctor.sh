@@ -5,7 +5,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PLATFORM_DIR="$REPO_ROOT/flow/platforms/sclc1d"
 RAW_PDK_LINK="$REPO_ROOT/pdks/sclc1d/current"
 
-EXPECTED_MY_DTECH_SHA256="14ce5806614bb31fbeb36f35da0d2fbccf3b1988ef1d2ffdfa66bb0ab4ecb8b1"
+EXPECTED_MY_DTECH_SHA256="28c622ff084f1cdb9aa863898471ec678a2b1713a30915f36e3f31b1a45ce7ef"
 
 REF_OPENLANE="/workspaces/OpenLane-scl-ref"
 REF_COMMIT="ff5509f65b17bfa4068d5336495ab1718987ff69"
@@ -63,9 +63,9 @@ PLATFORM_FILES=(
     lef/io_c1d.lef
     lef/corner_c1d.lef
 
-    lib/nldm_tt_27_1p5.lib
-    lib/nldm_ss_125_2p45.lib
-    lib/nldm_ff_m25_1p55.lib
+    lib/c1d_core_typ.lib
+    lib/c1d_core_min.lib
+    lib/c1d_core_max.lib
 
     lib/scl1u_pads_typ.lib
     lib/scl1u_pads_min.lib
@@ -73,12 +73,10 @@ PLATFORM_FILES=(
 
     gds/core_c1d.gds
     gds/io_c1d.gds
-    gds/scl_drc.txt
 
     verilog/c1d.v
 
     cdl/core_iolib_c1d.cdl
-    cdl/res_model.subckt
 
     scl_c1d.lyt
     scl_c1d.lyp
@@ -177,9 +175,9 @@ RAW_REQUIRED=(
     sclc1d/libs.ref/digital_c1d/lef/io_c1d.lef
     sclc1d/libs.ref/digital_c1d/lef/corner_c1d.lef
 
-    sclc1d/libs.ref/digital_c1d/lib/nldm_tt_27_1p5.lib
-    sclc1d/libs.ref/digital_c1d/lib/nldm_ss_125_2p45.lib
-    sclc1d/libs.ref/digital_c1d/lib/nldm_ff_m25_1p55.lib
+    sclc1d/libs.ref/digital_c1d/lib/c1d_core_typ.lib
+    sclc1d/libs.ref/digital_c1d/lib/c1d_core_min.lib
+    sclc1d/libs.ref/digital_c1d/lib/c1d_core_max.lib
 
     sclc1d/libs.ref/digital_c1d/lib/scl1u_pads_typ.lib
     sclc1d/libs.ref/digital_c1d/lib/scl1u_pads_min.lib
@@ -191,9 +189,6 @@ RAW_REQUIRED=(
     sclc1d/libs.ref/digital_c1d/verilog/c1d.v
 
     sclc1d/libs.ref/digital_c1d/cdl/core_iolib_c1d.cdl
-    sclc1d/libs.ref/digital_c1d/cdl/res_model.subckt
-
-    sclc1d/digital_c1d/gds/scl_drc.txt
 
     sclc1d/libs.tech/openrcx/scl_c1d.rcx.lib
 
@@ -206,8 +201,8 @@ RAW_REQUIRED=(
     sclc1d/libs.tech/klayout/tech/scl_c1d.lyp
     sclc1d/libs.tech/klayout/tech/scl_c1d.map
 
-    sclc1d/libs.tech/klayout/tech/drc/c1d_digital.drc
-    sclc1d/libs.tech/klayout/tech/drc/c1d_digital.lydrc
+    sclc1d/libs.tech/klayout/tech/drc/c1d_drc.drc
+    sclc1d/libs.tech/klayout/tech/drc/drc.lydrc
 
     sclc1d/libs.tech/klayout/tech/lvs/lvs_os_scl_c1d.lvs
     sclc1d/libs.tech/klayout/tech/lvs/lvs.lylvs
