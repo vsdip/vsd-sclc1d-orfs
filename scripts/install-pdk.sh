@@ -12,7 +12,7 @@ usage()
     echo "Usage: $0 /path/to/SCL_PDK.zip"
     echo
     echo "Accepted inputs:"
-    echo "  1. SCL outer package containing C1D_OSPDK_KIT_Digital/my_dtech.zip"
+    echo "  1. SCL outer package containing Digital_C1D/my_dtech.zip"    
     echo "  2. my_dtech.zip directly"
 }
 
@@ -163,9 +163,9 @@ copy_file digital_c1d/lef/io_c1d.lef     lef/io_c1d.lef
 copy_file digital_c1d/lef/corner_c1d.lef lef/corner_c1d.lef
 
 # Core Liberty
-copy_file digital_c1d/lib/nldm_tt_27_1p5.lib    lib/nldm_tt_27_1p5.lib
-copy_file digital_c1d/lib/nldm_ss_125_2p45.lib  lib/nldm_ss_125_2p45.lib
-copy_file digital_c1d/lib/nldm_ff_m25_1p55.lib  lib/nldm_ff_m25_1p55.lib
+copy_file digital_c1d/lib/c1d_core_typ.lib lib/c1d_core_typ.lib
+copy_file digital_c1d/lib/c1d_core_min.lib lib/c1d_core_min.lib
+copy_file digital_c1d/lib/c1d_core_max.lib lib/c1d_core_max.lib
 
 # I/O pad Liberty
 copy_file digital_c1d/lib/scl1u_pads_typ.lib lib/scl1u_pads_typ.lib
@@ -175,7 +175,6 @@ copy_file digital_c1d/lib/scl1u_pads_max.lib lib/scl1u_pads_max.lib
 # GDS
 copy_file digital_c1d/gds/core_c1d.gds gds/core_c1d.gds
 copy_file digital_c1d/gds/io_c1d.gds   gds/io_c1d.gds
-copy_file digital_c1d/gds/scl_drc.txt  gds/scl_drc.txt
 
 # Simulation
 copy_file digital_c1d/verilog/c1d.v verilog/c1d.v
@@ -184,8 +183,6 @@ copy_file digital_c1d/verilog/c1d.v verilog/c1d.v
 copy_file digital_c1d/cdl/core_iolib_c1d.cdl \
     cdl/core_iolib_c1d.cdl
 
-copy_file digital_c1d/cdl/res_model.subckt \
-    cdl/res_model.subckt
 
 # ------------------------------------------------------------
 # KLayout technology + physical verification
