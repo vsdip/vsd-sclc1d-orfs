@@ -82,8 +82,8 @@ PLATFORM_FILES=(
     scl_c1d.lyp
     scl_c1d.map
 
-    drc/c1d_digital.drc
-    drc/c1d_digital.lydrc
+    drc/c1d_drc.drc
+    drc/drc.lydrc
 
     lvs/lvs_os_scl_c1d.lvs
     lvs/lvs.lylvs
