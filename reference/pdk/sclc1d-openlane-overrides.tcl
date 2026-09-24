@@ -21,8 +21,8 @@ set ::env(CELLS_LEF) \
 # ------------------------------------------------------------
 
 set sclc1d_core_lib \
-    "$sclc1d_lib_root/lib/nldm_tt_27_1p5.lib"
-
+    "$sclc1d_lib_root/lib/c1d_core_typ.lib"
+    
 set ::env(LIB_SYNTH)          $sclc1d_core_lib
 set ::env(LIB_SYNTH_COMPLETE) $sclc1d_core_lib
 set ::env(LIB_TYPICAL)        $sclc1d_core_lib
